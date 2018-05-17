@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <modules>
+        <Foggyline_MaxOrderAmount>
+            <version>1.0.0.0</version>
+        </Foggyline_MaxOrderAmount>
+    </modules>
+</config>
