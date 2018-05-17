@@ -5,15 +5,6 @@
             <version>1.0.0.0</version>
         </Foggyline_MaxOrderAmount>
     </modules>
-    <default>
-        <sales>
-            <foggyline_maxorderamount>
-                <active>0</active>
-                <single_order_top_amount>1500</single_order_top_amount>
-                <single_order_top_amount_msg><![CDATA[No single order allowed with amount over %s.]]></single_order_top_amount_msg>
-            </foggyline_maxorderamount>
-        </sales>
-    </default>
     <global>
         <models>
             <foggyline_maxorderamount>
@@ -26,4 +17,25 @@
             </foggyline_maxorderamount>
         </helpers>
     </global>
+    <frontend>
+        <events>
+            <sales_quote_save_before>
+                <observers>
+                    <foggyline_maxorderamount_enforceSingleOrderLimit>
+                        <class>foggyline_maxorderamount/observer</class>
+                        <method>enforceSingleOrderLimit</method>
+                    </foggyline_maxorderamount_enforceSingleOrderLimit>
+                </observers>
+            </sales_quote_save_before>
+        </events>
+    </frontend>
+    <default>
+        <sales>
+            <foggyline_maxorderamount>
+                <active>0</active>
+                <single_order_top_amount>200</single_order_top_amount>
+                <single_order_top_amount_msg><![CDATA[No single order allowed with amount over %s.]]></single_order_top_amount_msg>
+            </foggyline_maxorderamount>
+        </sales>
+    </default>
 </config>

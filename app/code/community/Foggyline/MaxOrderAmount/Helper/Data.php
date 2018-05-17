@@ -13,9 +13,7 @@
  * @link       http://framework.zend.com/package/PackageName
  * @since      Class available since Release 1.0
  */
-
-
-class Foggyline_MaxOrderAmount_Data extends Mage_Core_Helper_Abstract
+class Foggyline_MaxOrderAmount_Helper_Data extends Mage_Core_Helper_Abstract
 {
     const XML_PATH_ACTIVE = 'sales/foggyline_maxorderamount/active';
     const XML_PATH_SINGLE_ORDER_TOP_AMOUNT
