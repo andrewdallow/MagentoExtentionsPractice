@@ -29,6 +29,22 @@ class Foggyline_Cargo_Model_Shipping_Carrier_Fixy
      */
     public function collectRates(Mage_Shipping_Model_Rate_Request $request)
     {
+        if (!$this->getConfigFlag('active')
+            || Mage::app()->getStore()->isAdmin()
+        ) {
+            return false;
+        }
+    
+        $shippingPrice = $this->getConfigData('price');
+        $grandTotal = Mage::getModel('checkout/session')
+            ->getQuote()
+            ->getGrandTotal();
+    
+        if ($grandTotal > $this->getConfigData('discountedPriceCutoff')) {
+            $shippingPrice = $this->getConfigData('discountedPrice');
+        }
+        
+        
         $result = Mage::getModel('shipping/rate_result');
         $method = Mage::getModel('shipping/rate_result_method');
         
@@ -37,9 +53,9 @@ class Foggyline_Cargo_Model_Shipping_Carrier_Fixy
         
         $method->setMethod($this->_code);
         $method->setMethodTitle($this->getConfigData('name'));
-        
-        $method->setPrice(14.99); /* temporary hard coded */
-        $method->setCost(14.99); /* temporary hard coded */
+    
+        $method->setPrice($shippingPrice); /* temporary hard coded */
+        $method->setCost($shippingPrice); /* temporary hard coded */
         
         $result->append($method);
         
