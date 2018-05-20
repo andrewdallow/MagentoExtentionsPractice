@@ -19,6 +19,9 @@
                 <model>foggyline_cargo/shipping_carrier_fixy</model>
                 <title>Foggyline Cargo</title>
                 <name>Fixy</name>
+                <price>20.00</price>
+                <discountedPrice>10.00</discountedPrice>
+                <discountedPriceCutoff>100</discountedPriceCutoff>
             </foggyline_cargo_fixy>
         </carriers>
     </default>
