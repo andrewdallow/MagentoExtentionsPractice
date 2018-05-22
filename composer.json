@@ -1,0 +1,13 @@
+{
+    "name": "andre/magento",
+    "authors": [
+        {
+            "name": "Andrew Dallow",
+            "email": "andrewdallow@gmail.com"
+        }
+    ],
+    "require": {},
+    "require-dev": {
+        "n98/magerun": "^1.101"
+    }
+}

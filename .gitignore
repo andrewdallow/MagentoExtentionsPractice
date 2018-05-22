@@ -132,3 +132,5 @@ media/*
 lib/*
 .idea/*
 dev/*
+
+/vendor/
