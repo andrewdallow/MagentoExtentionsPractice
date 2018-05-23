@@ -36,9 +36,35 @@ class Mdg_Giftregistry_IndexController
     
     public function deleteAction()
     {
-        $this->loadLayout();
-        $this->renderLayout();
-        return $this;
+        try {
+            $registryId = $this->getRequest()->getParam('registry_id');
+            // Check that the POST request exists and registryID is specified
+            if ($registryId) {
+                // Check if registry entry exists in database
+                if ($registry = Mage::getModel('mdg_giftregistry/entity')->load(
+                    $registryId
+                )
+                ) {
+                    $registry->delete();
+                    $successMessage = Mage::helper('mdg_giftregistry')->__(
+                        'Gift registry has been succesfully deleted.'
+                    );
+                    Mage::getSingleton('core/session')->addSuccess(
+                        $successMessage
+                    );
+                } else {
+                    throw new Exception(
+                        "There was a problem deleting the registry"
+                    );
+                }
+            }
+        } catch (Exception $exception) {
+            Mage::getSingleton('core/session')->addError(
+                $exception->getMessage()
+            );
+            $this->_redirect('*/*/');
+        }
+        $this->_redirect('*/*/');
     }
     
     public function newAction()
@@ -60,17 +86,9 @@ class Mdg_Giftregistry_IndexController
         try {
             $data = $this->getRequest()->getParams();
             $registry = Mage::getModel('mdg_giftregistry/entity');
-            $customer = Mage::getSingleton('customer/session')->getCustomer();
-            
-            if ($this->getRequest()->getPost() && !empty($data)) {
-                $registry->updateRegistryData($customer, $data);
-                $registry->save();
-                $successMessage = Mage::helper('mdg_giftregistry')->__(
-                    'Registry Successfully Created'
-                );
-                Mage::getSingleton('core/session')->addSuccess(
-                    $successMessage
-                );
+    
+            if ($this->_isValidPost($data)) {
+                $this->_post($registry, $data);
             } else {
                 throw new Exception("Insufficient Data provided");
             }
@@ -88,19 +106,11 @@ class Mdg_Giftregistry_IndexController
         try {
             $data = $this->getRequest()->getParams();
             $registry = Mage::getModel('mdg_giftregistry/entity');
-            $customer = Mage::getSingleton('customer/session')->getCustomer();
-            
+    
             if ($this->_isValidPost($data)) {
                 $registry->load($data['registry_id']);
                 if ($registry) {
-                    $registry->updateRegistryData($customer, $data);
-                    $registry->save();
-                    $successMessage = Mage::helper('mdg_giftregistry')->__(
-                        'Registry Successfully Saved'
-                    );
-                    Mage::getSingleton('core/session')->addSuccess(
-                        $successMessage
-                    );
+                    $this->_post($registry, $data);
                 }
             } else {
                 throw new Exception("Invalid Registry Specified");
@@ -114,12 +124,30 @@ class Mdg_Giftregistry_IndexController
         $this->_redirect('*/*/');
     }
     
+    /**
+     * Check POST request and data are valid.
+     *
+     * @param $data
+     *
+     * @return bool
+     */
     private function _isValidPost($data)
     {
-        return $this->getRequest()->getPosts() && !empty($data);
+        return $this->getRequest()->getPost() && !empty($data);
     }
     
-    private function post($data)
+    private function _post(Mdg_Giftregistry_Model_Entity $registry, $data)
     {
+        $customer = Mage::getSingleton('customer/session')->getCustomer();
+    
+        $registry->updateRegistryData($customer, $data);
+        $registry->save();
+    
+        $successMessage = Mage::helper('mdg_giftregistry')->__(
+            'Registry Successfully Saved'
+        );
+        Mage::getSingleton('core/session')->addSuccess(
+            $successMessage
+        );
     }
 }
