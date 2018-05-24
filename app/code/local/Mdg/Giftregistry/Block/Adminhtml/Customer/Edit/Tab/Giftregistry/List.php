@@ -20,7 +20,7 @@ class Mdg_Giftregistry_Block_Adminhtml_Customer_Edit_Tab_Giftregistry_List
     public function __construct()
     {
         parent::__construct();
-        $this->setId('registryList');
+        $this->setId('giftregistryList');
         $this->setUseAjax(true);
         $this->setDefaultSort('event_name');
         $this->setFilterVisibility(false);
@@ -35,7 +35,6 @@ class Mdg_Giftregistry_Block_Adminhtml_Customer_Edit_Tab_Giftregistry_List
                 'main_table.customer_id', $this->getRequest()->getParam('id')
             );
         $this->setCollection($collection);
-        print_r($collection);
         return parent::_prepareCollection();
     }
     
@@ -69,5 +68,10 @@ class Mdg_Giftregistry_Block_Adminhtml_Customer_Edit_Tab_Giftregistry_List
             )
         );
         return parent::_prepareColumns();
+    }
+    
+    public function getGridUrl()
+    {
+        return $this->getUrl('*/*/grid', array('_current' => true));
     }
 }

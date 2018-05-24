@@ -4,6 +4,9 @@
         <Mdg_Giftregistry>
             <active>true</active>
             <codePool>local</codePool>
+            <depends>
+                <Mage_Customer/>
+            </depends>
         </Mdg_Giftregistry>
     </modules>
 </config>
